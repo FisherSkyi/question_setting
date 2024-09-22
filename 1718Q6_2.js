@@ -1,12 +1,15 @@
+        function get_step(position, xs) {
+            return position === 1 ? head(xs) : get_step((position - 1), tail(xs));
+        }
+
 function solveable(xs, n) {
     const len = length(xs);
     function move(xs, n, steps, position) {
-        function get_step(position, xs) {
-            return position === 1? head(xs) : get_step((position - 1), tail(xs));
-        }
         const new_pos1 = position + steps;
         const new_pos2 = position - steps;
-        if (new_pos1 <= len && new_pos2 >= 1) {
+        if (n <= 0) {
+            return false;
+        } else if (new_pos1 <= len && new_pos2 >= 1) {
             return move(xs, n-1, get_step(new_pos1,xs), new_pos1) ||
                         move(xs, n-1, get_step(new_pos2,xs), new_pos2);
         } else if (new_pos1 === len) {

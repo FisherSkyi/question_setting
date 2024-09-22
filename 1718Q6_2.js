@@ -10,8 +10,9 @@ function solveable(xs, n) {
         if (n <= 0) {
             return false;
         } else if (new_pos1 <= len && new_pos2 >= 1) {
-            return move(xs, n-1, get_step(new_pos1,xs), new_pos1) ||
-                        move(xs, n-1, get_step(new_pos2,xs), new_pos2);
+            return move(xs, n-1, get_step(new_pos1,xs), new_pos1) 
+                    ||
+                   move(xs, n-1, get_step(new_pos2,xs), new_pos2);
         } else if (new_pos1 === len) {
             return true;
         } else if (new_pos1 > len && new_pos2 >= 1) {

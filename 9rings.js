@@ -1,42 +1,34 @@
-function make_step(action, ID) {
-    return pair(action, ID);
+function generate_num_list(n) {
+  return n === 2 ? list(1, 2, 1) : append(generate_num_list(n - 1), pair(n, generate_num_list(n - 1)));
 }
 
+const rings = list(list(pair("off", 3)), list(pair("on", 2)), list(pair("off", 1)));
+const len = length(rings);
+const num_list = generate_num_list(len);
 
+display(num_list);
 
-function flip(rings) {
-    function get_action(ring) {
-        return head(head(ring)) === "on" ? "remove" : "insert";
-    }
-    return make_step(get_action(rings), tail(head((rings))));
+function my_filter(lst, n, ans) {
+  return is_null(lst) 
+  ? ans 
+  : head(lst) === n && head(head(list_ref(rings, n-1))) === "on" 
+  ? my_filter(tail(lst), n + 1, ans) 
+  : head(lst) === n && head(head(list_ref(rings, n - 1))) !== "on" 
+  ? my_filter(tail(lst), n + 1, pair(head(lst), ans)) 
+  : my_filter(tail(lst), n, pair(head(lst), ans));
 }
 
-function make_ring(state, id) {
-    return pair(state, id);
+const num_list2 = my_filter(num_list, 1, null);
+display(num_list2);
+
+function time(x) {
+  function time_counter(x, ys, n) {
+    return is_null(ys) ? n : x === head(ys) ? time_counter(x, tail(ys), n + 1) : time_counter(x, tail(ys), n);
+  }
+  return time_counter(x, num_list2, 0);
 }
 
-function steps_to_free_configuration(desired_first_state, rings) {
-    
-    function loop(n) {
-        const ini = list_ref(rings, length(rings) - n);
-        if (head(head(ini)) === "on") {
-            return accumulate((x, y) => append(append(list(flip(make_ring("on", x-1))), loop(x - 1)),y), 
-            null, reverse(enum_list(1,n)));
-        } else {
-            return pair(flip(make_ring("off", n)), accumulate((x, y) => append(pair(flip(make_ring("on", x-1)), loop(x - 1)),y), 
-            null, reverse(enum_list(1,n))));
-        }
-    }
-    const n = length(rings) - 1;
-    if (head(head(head(rings))) === desired_first_state) {
-        return map(loop, reverse(enum_list(1, n-1)));
-    } else {
-        return pair(flip(head(rings)), tail(append(loop(n), map(reverse(enum_list(1, n-1))))));
-    }
-}
+// time(2);
+// time(1);
 
-steps_to_free_configuration(
-    "on",
-    list(list(make_ring("off", 3)),
-    list(make_ring("on", 2)),
-    list(make_ring("off", 1))));
+map(x => pair(time(list_ref(num_list2, x)) % 2 === 1 ? "insert" : "remove", list_ref(num_list2, x - 1)), num_list2);

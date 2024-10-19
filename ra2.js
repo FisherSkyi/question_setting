@@ -19,4 +19,41 @@
         //   false && 0;
 //           false
 
-function binary
+// function binary_search(a, v) {
+//     function search(low, high) {
+//         if (low > high) {
+//             return false;
+//         } else {
+//             let mid = math_floor((low + high) / 2);
+//             return (v === a[mid])
+//                 ||
+//                 ((v < a[mid])
+//                 ? search(low, mid - 1)
+//                 : search(mid + 1, high));
+//         }
+//     }
+//     return search(0, array_length(a));
+// }
+
+// binary_search([1,3,5,7,9,11,13,15], 12);
+
+
+
+
+
+
+
+
+function permutation(s) {
+    return is_null(s)
+    ? list(null)
+    : accumulate(
+        append,
+        null,
+        map(
+            x=>
+            map(p => pair(x, p), permutation(remove(x, s)))
+            ,s)
+            );
+}
+permutation(list(1));

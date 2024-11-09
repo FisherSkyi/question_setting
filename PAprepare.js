@@ -69,6 +69,32 @@ function d_merge_sort(xs) {
     }
 }
 
+// quick-sort =================================================
+function partition(xs, p) {
+    const smaller_than = filter(x => x <= p, xs);
+    const bigger_than = filter(x => x > p, xs);
+    return pair(smaller_than, bigger_than);
+}
+function quicksort(xs) {
+    const had = xs => tail(head(partition(xs, head(xs))));
+    const num = xs => list(head(head(partition(xs, head(xs)))));
+    const til = xs => tail(partition(xs, head(xs)));
+    const sort = xs => is_null(xs)
+            ? null
+            : length(xs) === 1
+            ? xs
+            : list(sort(had(xs)), num(xs), sort(til(xs)));
+    function link_together(initial, lst) {
+        return length(lst) === 1 
+                        ? lst 
+                        :accumulate((x, y) => length(x) > 1 
+                                                ? append(link_together(initial, x), y)
+                                                : append(x,y),
+                                    initial,
+                                    lst);
+    }
+    return link_together(null, sort(xs));
+}
 
 // find max ===================================================
 function find_max(xs) {

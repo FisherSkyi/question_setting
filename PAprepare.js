@@ -84,6 +84,7 @@ function quicksort(xs) {
             : length(xs) === 1
             ? xs
             : list(sort(had(xs)), num(xs), sort(til(xs)));
+    return sort;
     function link_together(initial, lst) {
         return length(lst) === 1 
                         ? lst 
@@ -95,6 +96,40 @@ function quicksort(xs) {
     }
     return link_together(null, sort(xs));
 }
+
+
+// bubble-sort
+function bubble(A) {
+    const len = array_length(A);
+    let i = len - 1;
+    while (i >= 1) {
+        let j = 1;
+        while (j <= i) {
+            const temp = A[j-1];
+            if(A[j-1] > A[j]) {
+                A[j-1] = A[j];
+                A[j] = temp;
+            } else {}
+            j = j + 1;
+        }
+        i = i - 1;
+    }
+}
+
+function bubble(A) {
+    const len = array_length(A);
+    for(let i = len - 1; i >= 1; i = i - 1) {
+        for(let j = 1; j <= i; j = j + 1) {
+            const temp = A[j-1];
+            if(A[j-1] > A[j]) {
+                A[j-1] = A[j];
+                A[j] = temp;
+            }
+        }
+    }
+    return A;
+}
+
 
 // find max ===================================================
 function find_max(xs) {
